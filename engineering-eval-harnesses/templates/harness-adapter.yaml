@@ -1,0 +1,38 @@
+# Harness Adapter — Feedback Integration Bridge
+# ================================================
+# Connects an eval harness to a production feedback system so that
+# real user corrections feed back into the evaluation loop.
+#
+# Why both? The eval harness tests against a reference (offline quality).
+# The feedback system captures real-world corrections (production quality).
+# Combining both prevents the eval from optimizing for the wrong quality signal.
+
+# --- Eval Harness Connection ---
+eval:
+  scorer: "scorer_{domain}.py"
+  config: "harness-config.yaml"
+  output_dir: "output/"
+  reference_dir: "{reference_path}"
+
+# --- Feedback Connection ---
+feedback:
+  corrections_path: "{corrections_path}"     # Where user corrections are logged
+  changelog_path: "{changelog_path}"         # Change history from feedback system
+
+  # Map feedback categories to eval dimensions
+  category_mapping:
+    accuracy: "data_accuracy"
+    completeness: "content_completeness"
+    formatting: "structural_fidelity"
+    # Add mappings as needed
+
+# --- Integration Settings ---
+integration:
+  # Flag systematic issues when the same correction appears 3+ times
+  systematic_threshold: 3
+
+  # Include feedback patterns in analyzer prompts, weighted by frequency
+  inject_in_analyzer: true
+
+  # Future: adjust scorer weights based on feedback signal
+  dynamic_weights: false

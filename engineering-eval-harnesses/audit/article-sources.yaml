@@ -1,0 +1,59 @@
+# Harness Engineering Best-Practice Sources
+# ================================================
+# Curated articles that inform the principles in best-practices.md.
+# Audit mode reads this file, fetches each URL, and checks for new insights.
+#
+# Status: active | stale | superseded
+# Last checked: date of most recent audit
+
+sources:
+  - title: "Building effective agents"
+    author: "Anthropic"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+    key_insights:
+      - "Generator-evaluator loop inspired by GANs"
+      - "JSON over markdown for state"
+      - "Find the simplest solution possible"
+    status: active
+    last_checked: "2026-04-11"
+
+  - title: "How we build multi-agent research systems"
+    author: "Anthropic"
+    url: "https://www.anthropic.com/engineering/multi-agent-research-systems"
+    key_insights:
+      - "Session boundaries are absolute — build explicit handoff mechanisms"
+      - "Multi-agent specialization over monolithic agents"
+      - "Active testing with automated evaluations"
+    status: active
+    last_checked: "2026-04-11"
+
+  - title: "How we built our multi-agent research system"
+    author: "OpenAI (Codex team)"
+    url: "https://openai.com/index/building-an-agent-that-gets-stuff-done/"
+    key_insights:
+      - "Progressive disclosure through AGENTS.md"
+      - "Repository as system of record"
+      - "Entropy management: recurring cleanup agents as garbage collection"
+      - "Custom linters inject remediation instructions"
+    status: active
+    last_checked: "2026-04-11"
+
+  - title: "The Ralph Loop"
+    author: "Geoffrey Huntley"
+    url: "https://ghuntley.com/specs/"
+    key_insights:
+      - "while :; do cat PROMPT.md | claude-code ; done"
+      - "Context effectiveness clips around 147-152k tokens"
+      - "Compilation as immediate backpressure"
+      - "STATE.json as core persistence"
+    status: active
+    last_checked: "2026-04-11"
+
+# --- Discovery Terms ---
+# Used by audit mode when searching for new articles
+search_terms:
+  - "AI agent harness engineering"
+  - "Claude Code eval loop best practices"
+  - "LLM agent evaluation framework"
+  - "agentic workflow scaffolding patterns"
+  - "autonomous agent testing methodology"

@@ -1,0 +1,16 @@
+{
+  "iteration": 0,
+  "status": "pending",
+  "target": "{plugin_name}",
+  "type": "plugin",
+  "scores": {
+    "dimension_1": 0.0,
+    "dimension_2": 0.0,
+    "dimension_3": 0.0,
+    "composite": 0.0
+  },
+  "best_composite": 0.0,
+  "consecutive_passes": 0,
+  "failed_approaches": [],
+  "change_log": []
+}

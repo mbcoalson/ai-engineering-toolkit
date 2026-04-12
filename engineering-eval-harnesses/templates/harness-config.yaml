@@ -1,0 +1,81 @@
+# Eval Harness Configuration Template
+# ================================================
+# Customize this for your domain. The overnight framework's orchestrate.py
+# reads this config to set up scoring dimensions and stop conditions.
+#
+# Usage: Copy and fill in placeholders (marked with {curly_braces}).
+
+# --- Identity ---
+plugin: "{plugin_name}"           # e.g., "report-automation"
+domain: "{domain_description}"    # e.g., "annual engineering reports"
+output_format: "{format}"         # e.g., "docx", "xlsx", "json", "pdf"
+
+# --- Scoring Dimensions ---
+# Define 2-5 orthogonal dimensions. Each dimension gets:
+#   - name: machine-readable key
+#   - description: what it measures (for the Analyzer prompt)
+#   - weight: contribution to composite (must sum to 1.0)
+#   - target: minimum acceptable score (0.0-1.0)
+#   - hard_fail_threshold: below this = automatic fail (optional)
+dimensions:
+  - name: "{dimension_1}"         # e.g., "data_accuracy"
+    description: "{what_it_measures}"
+    weight: 0.40
+    target: 0.95
+    hard_fail_threshold: null     # Set if this dimension is non-negotiable
+  - name: "{dimension_2}"         # e.g., "content_completeness"
+    description: "{what_it_measures}"
+    weight: 0.30
+    target: 0.90
+  - name: "{dimension_3}"         # e.g., "structural_fidelity"
+    description: "{what_it_measures}"
+    weight: 0.20
+    target: 0.85
+  # Add more as needed. 2-5 dimensions is the sweet spot.
+
+# --- Stop Conditions ---
+threshold: 0.90                   # Composite score to reach
+consecutive_passes: 3             # Must hit threshold N times in a row
+max_runs: 20                      # Safety cap
+stall_threshold: 4                # Stop after N iterations with no improvement
+
+# --- Paths ---
+# All paths relative to the run directory unless noted.
+paths:
+  source_dir: "{path_to_source_documents}"
+  reference: "{path_to_reference_output}"   # Scorer + Analyzer see this
+  plugin_root: "{path_to_plugin}"
+  output_dir: "output/"                     # Where generator writes output
+  scorer: "scorer_{domain}.py"
+  generator_prompt: "generator_prompt.md"
+  analyzer_prompt: "analyzer_prompt.md"
+
+# --- Agent Config ---
+generator:
+  model: "claude-sonnet-4-6"      # Sonnet for generation (cost-effective)
+  allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+analyzer:
+  model: "claude-opus-4-6"        # Opus for analysis (higher reasoning)
+  allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+context_reviewer:                 # Optional — cheap triage between scorer and analyzer
+  enabled: false                  # Enable for Standard/Heavy harnesses
+  model: "claude-haiku-4-5-20251001"
+  allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
+
+# --- Regression Handling ---
+regression:
+  max_dimension_drop: 0.05        # 5% circuit breaker per dimension
+  revert_strategy: "git_revert"   # or "snapshot_restore" for complex cases
+  max_failures_per_target: 3      # 3-strike rule for change deduplication
+
+# --- Exclusions ---
+# Items reported but not scored. Prevents penalizing the generator
+# for content it can't be expected to produce.
+exclusions:
+  - type: "{exclusion_type}"      # e.g., "judgment_sections"
+    description: "{why_excluded}"
+    pattern: "{detection_pattern}" # e.g., "[REVIEW REQUIRED]"
+
+# --- Cooldown ---
+cooldown_minutes: 5               # Between runs (rate limit protection)
+retry_backoff_minutes: 15         # After failure
