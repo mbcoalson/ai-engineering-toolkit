@@ -1,28 +1,40 @@
 # AI Engineering Toolkit
 
-Tools, frameworks, and skills for applying AI to engineering workflows — with the rigor engineers expect.
+Practical patterns for applying AI to engineering workflows without mistaking a plausible answer for a validated one.
 
-## What's Here
+This repository is an ongoing collection of tools, frameworks, and skills for building AI-assisted technical workflows that can be inspected, tested, and improved. It is not a production platform or a claim that an AI system can replace engineering judgment.
+
+## Start here
 
 ### [Engineering Eval Harnesses](engineering-eval-harnesses/)
 
-A framework for building automated evaluation loops that prove AI-powered tools produce correct, reliable output. Based on the principle that LLMs are probabilistic systems and must be tested statistically.
+A Claude Code skill and template set for evaluating structured outputs such as documents, spreadsheets, and JSON. The core pattern separates generation from evaluation:
 
-**Core pattern:** Generator agent (produces output) → Deterministic scorer (Python, no AI) → Analyzer agent (diagnoses gaps, patches pipeline) → Orchestrator (loops until threshold met).
+```text
+Generator → deterministic scorer → independent analysis → bounded iteration
+```
 
-Built as a [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code) but the methodology applies to any LLM-powered tool pipeline.
+Use it when a workflow needs more than a persuasive demo: a known-good reference, explicit scoring criteria, inspectable state, and a stopping condition.
 
-## Philosophy
+The harness is designed around a few working principles:
 
-1. **LLMs are probabilistic. Test them like it.** One successful run is not validation. Characterize the output distribution.
-2. **Make everything deterministic that you can.** Push as much work as possible out of the probabilistic domain before involving the LLM.
-3. **Separate generation from evaluation.** The system that creates the output must not be the system that judges it.
-4. **Engineering rigor over demo magic.** The first working prototype is 20% of the effort. The harness is the other 80%.
+1. **LLMs are probabilistic. Test them like it.** One successful run is not validation.
+2. **Make what you can deterministic.** Use code and explicit checks before asking a model to reason.
+3. **Separate generation from evaluation.** The system producing work should not be its only judge.
+4. **Keep humans responsible for consequential assumptions.** A harness can expose uncertainty; it cannot make a decision accountable.
 
-## Author
+## Status and boundaries
 
-**Mat Coalson** — Building energy engineer building AI tools for the engineering industry.
+This is an active, evolving project. The included material is a framework and set of templates—not a substitute for domain validation, professional review, security assessment, or production-readiness testing. Individual workflows must define their own data boundaries, evidence sources, and acceptance criteria.
 
-- [mbcoalson.com](https://mbcoalson.com)
-- [GitHub](https://github.com/mbcoalson)
-- [LinkedIn](https://linkedin.com/in/mbcoalson)
+The current harness is built as a [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code), but the evaluation approach is intended to be useful across model providers and agent frameworks.
+
+## Repository guide
+
+- [`engineering-eval-harnesses/`](engineering-eval-harnesses/) — skill, templates, guidance, and an audit report structure
+- [`engineering-eval-harnesses/README.md`](engineering-eval-harnesses/README.md) — what the harness contains and how to begin
+- [`engineering-eval-harnesses/best-practices.md`](engineering-eval-harnesses/best-practices.md) — curated principles and sources
+
+## About
+
+Built by [Mat Coalson](https://mbcoalson.com), a building energy engineer exploring AI tools for rigorous technical work.
